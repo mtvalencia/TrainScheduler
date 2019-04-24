@@ -1,3 +1,12 @@
+// Steps to complete:
+
+// 1. Initialize Firebase
+// 2. Create button for adding new employees - then update the html + update the database
+// 3. Create a way to retrieve employees from the employee database.
+// 4. Create a way to calculate the months worked. Using difference between start and current time.
+//    Then use moment.js formatting to set difference in months.
+// 5. Calculate Total billed
+
 // Initialize Firebase
 var config = {
     apiKey: "AIzaSyBSLlkVR1Jl9YBPSBa4DC5PMq6vtRagBz0",
@@ -10,65 +19,93 @@ var config = {
   firebase.initializeApp(config);
 
   var dataRef = firebase.database();
-
-      // Initial Values
-      var tName = "";
-      var destination = "";
-      var fTrainTime = "";
-      var frequency = "";
-
-    // Capture Button Click
-    $("#addTrain").on("click", function(event) {
-        event.preventDefault();
-
-    // Code in the logic for storing and retrieving the most recent user.
-    // Don't forget to provide initial data to your Firebase database.
-    tName = $("#inputTrainName").val().trim();
-    destination = $("#inputDestination").val().trim();
-    fTrainTime = $("#inputFirstTrainTime").val().trim();
-    frequency = $("#inputFrequency").val().trim();
-
-      // Code for the push
-      dataRef.ref().push({
-
-        tName: tName,
-        destination: destination,
-        fTrainTime: fTrainTime,
-        frequency: frequency,
+  
+  // 2. Button for adding Employees
+  $("#addTrain").on("click", function(event) {
+    event.preventDefault();
+  
+    // Grabs user input
+    var tName = $("#inputTrainName").val().trim();
+    var tDestination = $("#inputDestination").val().trim();
+    var fTrainTime = $("#inputFirstTrainTime").val().trim();
+    var tFrequency = $("#inputFrequency").val().trim();
+  
+    // Creates local "temporary" object for holding employee data
+    var newTrain = {
+        name: tName,
+        destination: tDestination,
+        trainTime: fTrainTime,
+        frequency: tFrequency,
         dateAdded: firebase.database.ServerValue.TIMESTAMP
-      });
-    });
-
-    // Firebase watcher + initial loader HINT: This code behaves similarly to .on("value")
-    dataRef.ref().on("child_added", function(childSnapshot) {
-
-        // Log everything that's coming out of snapshot
-        console.log(childSnapshot.val().tName);
-        console.log(childSnapshot.val().destination);
-        console.log(childSnapshot.val().fTrainTime);
-        console.log(childSnapshot.val().frequency);
-        console.log(childSnapshot.val().dateAdded);
+      };
   
-        // // full list of items to the well
-        $("#tName-display").append("<td> + childSnapshot.val.tName + </td>");
-        $("#destination-display").append("<td> + childSnapshot.val.destination + </td>");
-        $("#frequency-display").append("<td> + childSnapshot.val.frequency + </td>");
-
-      // full list of items to the well
-    //   $("#output").append("<div class='well'><span class='train-name'> " +
-    //     childSnapshot.val().tName +
-    //     " </span><span class='train-destination'> " + childSnapshot.val().destination +
-    //     " </span><span class='train-frequency'> " + childSnapshot.val().frequency +
-    //     " </span></div>");
-
-      // Handle the errors
-    }, function(errorObject) {
-        console.log("Errors handled: " + errorObject.code);
-      });
+    // Uploads employee data to the database
+    dataRef.ref().push(newTrain);
   
-      dataRef.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function(snapshot) {
-        // Change the HTML to reflect
-        $("#tName-display").text(snapshot.val().tName);
-        $("#destination-display").text(snapshot.val().destination);
-        $("#frequency-display").text(snapshot.val().frequency);
-      });
+    // Logs everything to console
+    console.log(newTrain.name);
+    console.log(newTrain.destination);
+    console.log(newTrain.trainTime);
+    console.log(newTrain.frequency);
+    console.log(newTrain.dateAdded);
+
+
+    // Clears all of the text-boxes
+    $("#inputTrainName").val("");
+    $("#inputDestination").val("");
+    $("#inputFirstTrainTime").val("");
+    $("#inputFrequency").val("");
+});
+  
+  // 3. Create Firebase event for adding employee to the database and a row in the html when a user adds an entry
+  dataRef.ref().on("child_added", function(childSnapshot) {
+    console.log(childSnapshot.val());
+  
+    // Store everything into a variable.
+    var getTName = childSnapshot.val().name;
+    var getTDestination = childSnapshot.val().destination;
+    var getTTrainTime = childSnapshot.val().trainTime;
+    var getTFrequency = childSnapshot.val().frequency;
+    var getDateAdded = childSnapshot.val().dateAdded;
+  
+    // Employee Info
+    console.log(getTName);
+    console.log(getTDestination);
+    console.log(getTTrainTime);
+    console.log(getTFrequency);
+    console.log(getDateAdded);
+
+  
+    // Prettify the employee start
+    // var empStartPretty = moment.unix(empStart).format("MM/DD/YYYY");
+  
+    // // Calculate the months worked using hardcore math
+    // // To calculate the months worked
+    // var empMonths = moment().diff(moment(empStart, "X"), "months");
+    // console.log(empMonths);
+  
+    // // Calculate the total billed rate
+    // var empBilled = empMonths * empRate;
+    // console.log(empBilled);
+  
+    // Create the new row
+    var newRow = $("<tr>").append(
+      $("<td>").text(getTName),
+      $("<td>").text(getTDestination),
+      $("<td>").text(getTFrequency),
+      $("<td>").text(getTTrainTime)
+
+    );
+  
+    // Append the new row to the table
+    $("#output").append(newRow);
+  });
+
+  
+  // Example Time Math
+  // -----------------------------------------------------------------------------
+  // Assume Employee start date of January 1, 2015
+  // Assume current date is March 1, 2016
+  
+  // We know that this is 15 months.
+  // Now we will create code in moment.js to confirm that any attempt we use meets this test case
