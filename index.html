@@ -1,94 +1,107 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.10.0/firebase.js"></script>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>MTV Train Schedule - Home</title>
-  </head>
-  <body>
-      <div class="jumbotron" style="background-image: url('assets/images/speedytrain.jpg'); background-repeat: repeat-x;">
-          <div class="container" style="background-color:#1f3c53dc; color:#ffffff; padding: 35px;">
-            <h1 class="display-4">The Train is Coming!</h1>
-            <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.10.0/firebase.js"></script>
+
+  <title>MTV Train Schedule - Home</title>
+</head>
+
+<body>
+  <div class="jumbotron" style="background-image: url('assets/images/speedytrain.jpg'); background-repeat: repeat-x;">
+    <div class="container" style="background-color:#1f3c53dc; color:#ffffff; padding: 35px;">
+      <h1 class="display-4">The Colorado Express</h1>
+      <p>Welcome to the Colorado Express! Check to see if your train will arrive on time. <br> Refresh your browser
+        to update the times.</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Table -->
+    <div class="row">
+      <div class="col-md-12" style="margin: 0 auto 0 auto; padding: 5px;">
+        <table class="table table-hover" style="border: 2px solid">
+          <thead class="bg-info">
+            <tr>
+              <th scope="col">Train Name</th>
+              <th scope="col">Destination</th>
+              <th scope="col">Frequency (min)</th>
+              <th scope="col">Next Arrival</th>
+              <th scope="col">Minutes Away</th>
+            </tr>
+          </thead>
+          <tbody id="output">
+            <!-- Train info will populate this section     -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Form -->
+    <div class="col-sm-12 border bg-light shadow-lg"><br>
+      <h2>Train Form</h2>
+      <form id="main">
+        <div class="form-group row">
+          <label for="inputTrainName" class="col-sm-2 col-form-label">Train Name</label>
+          <div class="col-sm-12">
+            <input type="text" class="form-control" id="inputTrainName" name="inputTrainName">
+            <div class="messages"></div>
           </div>
-      </div>
-
-    <div class="container">
-<!-- Table -->
-      <div class="row">
-        <div class="col-md-12" style="margin: 0 auto 0 auto; padding: 5px;">
-          <table class="table table-hover" style="border: 2px solid">
-              <thead class="bg-info">
-                <tr>
-                  <th scope="col">Train Name</th>
-                  <th scope="col">Destination</th>
-                  <th scope="col">Frequency (min)</th>
-                  <th scope="col">Next Arrival</th>
-                  <th scope="col">Minutes Away</th>
-                </tr>
-              </thead>
-              <tbody id="output">
-                <!-- <tr>
-                  <td>Soul Train</td>
-                  <td>Motown</td>
-                  <td>5 min</td>
-                  <td>1200 hrs</td>
-                  <td>1 min</td>
-                </tr> -->
-              </tbody>
-            </table>
+        </div>
+        <div class="form-group row">
+          <label for="inputDestination" class="col-sm-2 col-form-label">Destination</label>
+          <div class="col-sm-12">
+            <input type="text" class="form-control" id="inputDestination" name="inputDestination">
+            <div class="messages"></div>
           </div>
-      </div>
-<!-- Form -->
-<div class="col-sm-12 border bg-light shadow-lg"><br><h2>Train Form</h2>
-  <form>
-    <div class="form-group row">
-      <label for="inputTrainName"" class="col-sm-2 col-form-label">Train Name</label>
-      <div class="col-sm-12">
-        <input type="trainName" class="form-control" id="inputTrainName">
-      </div>
-    </div>
-    <div class="form-group row">
-      <label for="inputDestination" class="col-sm-2 col-form-label">Destination</label>
-      <div class="col-sm-12">
-        <input type="destination" class="form-control" id="inputDestination">
-      </div>
-    </div>
-    <div class="form-group row">
-        <label for="inputFirstTrainTime" class="col-sm-2 col-form-label">First Train Time</label>
-        <div class="col-sm-12">
-          <input type="firstTrainTime" class="form-control" id="inputFirstTrainTime" placeholder="hhmm">
         </div>
-      </div>
-      <div class="form-group row">
-        <label for="inputFrequency" class="col-sm-2 col-form-label">Frequency</label>
-        <div class="col-sm-12">
-          <input type="frequency" class="form-control" id="inputFrequency" placeholder="minutes">
+        <div class="form-group row">
+          <label for="inputFirstTrainTime" class="col-sm-2 col-form-label">First Train Time <br> (24hr Time)</label>
+          <div class="col-sm-12">
+            <input type="text" class="form-control" id="inputFirstTrainTime" name="inputFirstTrainTime"
+              placeholder="Ex. 1455" maxlength="4">
+            <div class="messages"></div>
+          </div>
         </div>
-      </div>
-    <div class="form-group row">
-      <div class="col-sm-12">
-        <button type="submit" class="btn btn-info" id="addTrain">Add Train</button>
-        <div class="row"><br></div>
-      </div>
+        <div class="form-group row">
+          <label for="inputFrequency" class="col-sm-2 col-form-label">Frequency <br> (In Minutes)</label>
+          <div class="col-sm-12">
+            <input type="number" class="form-control" id="inputFrequency" name="inputFrequency" placeholder=" Ex. 36">
+            <div class="messages"></div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-12">
+            <button type="submit" class="btn btn-info" id="addTrain">Add Train</button>
+            <div class="row"><br></div>
+          </div>
+        </div>
+      </form>
     </div>
-  </form>
-</div>
     <!-- container div below -->
-    </div>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  </body>
-    <script src="assets/javascript/app.js"></script>
+  </div>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/validate.js/0.12.0/validate.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  </script>
+</body>
+<script src="assets/javascript/app.js"></script>
+
 </html>
