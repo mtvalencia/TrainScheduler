@@ -128,11 +128,11 @@ firebase.initializeApp(config);
 
 var dataRef = firebase.database();
 
-// 2. Button for adding Trains
-$("#addTrain").on("submit", function (event) {
+// 2. Button to add train
+$("#addTrain").on("click", function(event) {
   event.preventDefault();
 
-  // Grabs user input
+  // Grabs train input
   var tName = $("#inputTrainName").val().trim();
   var tDestination = $("#inputDestination").val().trim();
   var fTrainTime = $("#inputFirstTrainTime").val().trim();
@@ -140,12 +140,12 @@ $("#addTrain").on("submit", function (event) {
 
   // Creates local "temporary" object for holding train data
   var newTrain = {
-    name: tName,
-    destination: tDestination,
-    trainTime: fTrainTime,
-    frequency: tFrequency,
-    dateAdded: firebase.database.ServerValue.TIMESTAMP
-  };
+      name: tName,
+      destination: tDestination,
+      trainTime: fTrainTime,
+      frequency: tFrequency,
+      dateAdded: firebase.database.ServerValue.TIMESTAMP
+    };
 
   // Uploads train data to the database
   dataRef.ref().push(newTrain);
@@ -166,7 +166,7 @@ $("#addTrain").on("submit", function (event) {
 });
 
 // 3. Create Firebase event for adding train to the database and a row in the html when a user adds an entry
-dataRef.ref().on("child_added", function (childSnapshot) {
+dataRef.ref().on("child_added", function(childSnapshot) {
   console.log(childSnapshot.val());
 
   // Store everything into a variable.
@@ -176,14 +176,14 @@ dataRef.ref().on("child_added", function (childSnapshot) {
   var getTFrequency = childSnapshot.val().frequency;
   var getDateAdded = childSnapshot.val().dateAdded;
 
-  // Employee Info
+  // train Info
   console.log(getTName);
   console.log(getTDestination);
   console.log(getTTrainTime);
   console.log(getTFrequency);
   console.log(getDateAdded);
 
-  //Train time calculations 
+    //Train time calculations 
 
   // First Time (pushed back 1 year to make sure it comes before current time)
   var firstTimeConverted = moment(getTTrainTime, "HH:mm").subtract(1, "years");
